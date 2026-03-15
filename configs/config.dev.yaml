@@ -1,0 +1,12 @@
+app_env: dev
+http_addr: ":8080"
+grpc_addr: ":50051"
+log_level: info
+
+jwt:
+  access_ttl: 1800       # 30 min
+  refresh_ttl: 604800    # 7 days
+
+rate_limit:
+  rate: 200
+  window: 60

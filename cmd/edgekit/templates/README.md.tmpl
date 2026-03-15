@@ -1,0 +1,72 @@
+# {{.ProjectName}}
+
+Generated with [EdgeKit](https://github.com/edgekit/edgekit).
+
+## Features
+
+{{- if has "http"}}
+- HTTP API (Gin) on port {{.HTTPPort}}
+{{- end}}
+{{- if has "grpc"}}
+- gRPC API on port {{.GRPCPort}}
+{{- end}}
+{{- if has "postgres"}}
+- PostgreSQL database
+{{- end}}
+{{- if has "redis"}}
+- Redis cache
+{{- end}}
+{{- if has "jwt"}}
+- JWT authentication
+{{- end}}
+{{- if has "ratelimit"}}
+- Rate limiting
+{{- end}}
+
+## Getting Started
+
+```bash
+go mod tidy
+{{- if or (has "postgres") (has "redis")}}
+make docker-up
+{{- end}}
+make run
+```
+
+## Project Structure
+
+```
+{{.ProjectName}}/
+├── cmd/server/          # Application entrypoint
+├── configs/             # Configuration files
+├── internal/
+│   ├── app/             # Application wiring
+│   ├── core/            # Domain logic (ports & services)
+│   └── adapters/        # Driven & driving adapters
+{{- if has "http"}}
+│       ├── http/        # HTTP handlers
+{{- end}}
+{{- if has "grpc"}}
+│       ├── grpc/        # gRPC handlers
+{{- end}}
+{{- if has "postgres"}}
+│       └── repository/  # Database repositories
+{{- end}}
+├── pkg/                 # Shared packages
+{{- if has "grpc"}}
+├── proto/               # Protobuf definitions
+{{- end}}
+└── deploy/              # Docker & deployment configs
+```
+
+## Development
+
+```bash
+make build    # Build binary
+make test     # Run tests
+make lint     # Run linter
+make fmt      # Format code
+{{- if has "grpc"}}
+make proto    # Generate protobuf code
+{{- end}}
+```

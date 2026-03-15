@@ -1,0 +1,12 @@
+app_env: prod
+http_addr: ":8080"
+grpc_addr: ":50051"
+log_level: warn
+
+jwt:
+  access_ttl: 900        # 15 min
+  refresh_ttl: 86400     # 1 day
+
+rate_limit:
+  rate: 60
+  window: 60

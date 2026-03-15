@@ -1,0 +1,17 @@
+app_env: local
+http_addr: ":8080"
+grpc_addr: ":50051"
+log_level: debug
+
+database_url: "postgres://edgekit:edgekit@localhost:5432/edgekit?sslmode=disable"
+redis_url: "redis://localhost:6379"
+
+jwt:
+  private_key_path: "./configs/jwt.key"
+  public_key_path: "./configs/jwt.key.pub"
+  access_ttl: 3600      # 1 hour
+  refresh_ttl: 604800    # 7 days
+
+rate_limit:
+  rate: 100
+  window: 60

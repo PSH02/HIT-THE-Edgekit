@@ -1,0 +1,26 @@
+app_env: local
+{{- if has "http"}}
+http_addr: ":{{.HTTPPort}}"
+{{- end}}
+{{- if has "grpc"}}
+grpc_addr: ":{{.GRPCPort}}"
+{{- end}}
+log_level: debug
+{{if has "postgres"}}
+database_url: "postgres://{{.ProjectName}}:{{.ProjectName}}@localhost:5432/{{.ProjectName}}?sslmode=disable"
+{{- end}}
+{{- if has "redis"}}
+redis_url: "redis://localhost:6379"
+{{- end}}
+{{if has "jwt"}}
+jwt:
+  private_key_path: "./configs/jwt.key"
+  public_key_path: "./configs/jwt.key.pub"
+  access_ttl: 3600
+  refresh_ttl: 604800
+{{- end}}
+{{if has "ratelimit"}}
+rate_limit:
+  rate: 100
+  window: 60
+{{- end}}

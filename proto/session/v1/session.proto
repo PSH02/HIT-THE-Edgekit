@@ -1,0 +1,39 @@
+syntax = "proto3";
+package session.v1;
+option go_package = "github.com/edgekit/edgekit/proto/session/v1;sessionv1";
+
+service SessionService {
+  rpc CreateSession(CreateSessionRequest) returns (SessionResponse);
+  rpc GetSession(GetSessionRequest) returns (SessionResponse);
+  rpc JoinSession(JoinSessionRequest) returns (SessionResponse);
+  rpc LeaveSession(LeaveSessionRequest) returns (SessionResponse);
+}
+
+message CreateSessionRequest {
+  string name = 1;
+  int32 max_players = 2;
+  map<string, string> metadata = 3;
+}
+
+message GetSessionRequest {
+  string session_id = 1;
+}
+
+message JoinSessionRequest {
+  string session_id = 1;
+}
+
+message LeaveSessionRequest {
+  string session_id = 1;
+}
+
+message SessionResponse {
+  string id = 1;
+  string name = 2;
+  string host_user_id = 3;
+  int32 max_players = 4;
+  string status = 5;
+  repeated string players = 6;
+  map<string, string> metadata = 7;
+  string created_at = 8;
+}

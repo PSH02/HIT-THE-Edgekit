@@ -1,0 +1,48 @@
+services:
+  server:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - EDGEKIT_APP_ENV=local
+      - EDGEKIT_DATABASE_URL=postgres://edgekit:edgekit@postgres:5432/edgekit?sslmode=disable
+      - EDGEKIT_REDIS_URL=redis://redis:6379
+    volumes:
+      - ../configs:/app/configs
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: edgekit
+      POSTGRES_PASSWORD: edgekit
+      POSTGRES_DB: edgekit
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U edgekit"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
